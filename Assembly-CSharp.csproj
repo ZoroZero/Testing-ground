@@ -63,11 +63,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ChangeScene.cs" />
-    <Compile Include="Assets\EnemyCollision.cs" />
-    <Compile Include="Assets\PlayerMovement.cs" />
-    <Compile Include="Assets\SceneController.cs" />
-    <Compile Include="Assets\World.cs" />
+    <Compile Include="Assets\Arrow.cs" />
+    <Compile Include="Assets\Enemy.cs" />
+    <Compile Include="Assets\Menu.cs" />
+    <Compile Include="Assets\Player.cs" />
+    <Compile Include="Assets\Scripts\ChangeScene.cs" />
+    <Compile Include="Assets\Scripts\EnemyCollision.cs" />
+    <Compile Include="Assets\Scripts\PlayerData.cs" />
+    <Compile Include="Assets\Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem.cs" />
+    <Compile Include="Assets\Scripts\SceneController.cs" />
+    <Compile Include="Assets\Scripts\World.cs" />
+    <Compile Include="Assets\Shooting.cs" />
+    <None Include="Assets\Indoor RPG\LPC_house_interior\credits.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/Coding-Project/Game project/Testing ground/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
