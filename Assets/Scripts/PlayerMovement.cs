@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Move speed
-    public float move_Speed = 3f;
-
     // Rigid body
     public Rigidbody2D rb;
 
     // Speed vector
-    public Vector2 move;
+    public Vector3 move;
+
+    // Move time
+    public float move_Time = 0.5f;
+
+    private float inverse_MoveTime;
+
+    public bool moving = false;
 
 
     // Animator ref
@@ -32,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     // Enemy layer
     public LayerMask enemy_Layers;
 
+    public LayerMask blockingLayer;
     // Direction
     public enum Direction
     {
@@ -46,18 +51,26 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         direction = Direction.down;
+
+        inverse_MoveTime = 1f / move_Time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        move.x = Input.GetAxisRaw("Horizontal");
-        move.y = Input.GetAxisRaw("Vertical");
+        if (!moving)
+        {
+            move.x = Input.GetAxisRaw("Horizontal");
+            move.y = Input.GetAxisRaw("Vertical");
 
-        animator.SetFloat("horizontal", move.x);
-        animator.SetFloat("vertical", move.y);
-        animator.SetFloat("speed", move.sqrMagnitude);
-
+            animator.SetFloat("horizontal", move.x);
+            animator.SetFloat("vertical", move.y);
+            animator.SetFloat("speed", move.sqrMagnitude);
+            if(move.sqrMagnitude > 0)
+            {
+                Move();
+            }
+        }
         if (move.x < 0)
         {
             direction = Direction.left;
@@ -117,10 +130,43 @@ public class PlayerMovement : MonoBehaviour
             }
             melee_Hitbox.localPosition = position;
         }
-        
-        rb.MovePosition(rb.position + move * move_Speed * Time.fixedDeltaTime);
     }
 
+
+    // Moving function
+    private void Move()
+    {
+        Vector2 end = rb.transform.position + move;
+        RaycastHit2D hit = Physics2D.Linecast(rb.transform.position, end, blockingLayer);
+        if (hit.transform == null) {
+            StartCoroutine(SmoothMovement(end));
+        }
+        
+    }
+
+    // Smooth moving
+    IEnumerator SmoothMovement(Vector3 end)
+    {
+        float sqrRemainingDistance = (rb.transform.position - end).sqrMagnitude;
+        float elapsed = 0F;
+        moving = true;
+        while (sqrRemainingDistance > float.Epsilon && moving)
+        {
+            //Find a new position proportionally closer to the end, based on the moveTime
+            Vector3 newPostion = Vector3.MoveTowards(rb.position, end, elapsed/ move_Time);
+
+            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
+            rb.MovePosition(newPostion);
+
+            elapsed += Time.deltaTime;
+
+            sqrRemainingDistance = (rb.transform.position - end).sqrMagnitude;
+
+            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
+            yield return null;
+        }
+        moving = false;
+    }
 
     private void Attack()
     {
@@ -141,5 +187,24 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere(melee_Hitbox.position, melee_Range);
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Door"))
+        {
+            moving = false;
+            move = Vector3.zero;
+            enabled = false;
+            StartCoroutine(awake());
+            collision.GetComponent<Portal>().moveCharacter();
+        }
+    }
+
+    IEnumerator awake()
+    {
+        yield return new WaitForSeconds(0.25f);
+        enabled = true;
     }
 }

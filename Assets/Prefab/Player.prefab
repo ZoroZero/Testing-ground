@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 1756431161618656739}
   - component: {fileID: 1756431161618656738}
   - component: {fileID: 1756431161618656749}
-  - component: {fileID: 1756431161618656748}
   - component: {fileID: 1756431161618656751}
   - component: {fileID: 1756431161618656750}
   - component: {fileID: 1756431161618656745}
@@ -138,29 +137,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &1756431161618656748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756431161618656736}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c03b26ead57b764d9f2b55ff5cac04f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  move_Speed: 10
-  rb: {fileID: 1756431161618656749}
-  move: {x: 0, y: 0}
-  animator: {fileID: 1756431161618656751}
-  melee_Hitbox: {fileID: 1756431160869642082}
-  melee_Range: 0.25
-  melee_Damage: 40
-  attack_Rate: 2
-  enemy_Layers:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!95 &1756431161618656751
 Animator:
   serializedVersion: 3
@@ -197,7 +173,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 1.6, y: 1.6}
     newSize: {x: 2, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -218,7 +194,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da74ac6b7623c7149b21e75369b4ddaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  move_Time: 0.1
+  moving: 0
+  direction: 2
+  blockingLayer:
+    serializedVersion: 2
+    m_Bits: 0
   health: 3
+  move: {x: 0, y: 0, z: 0}
+  animator: {fileID: 0}
+  melee_Hitbox: {fileID: 0}
+  melee_Range: 0.3
+  melee_Damage: 40
+  attack_Rate: 2
+  enemy_Layers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &2109769912314619760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,3 +222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80af1f355a981a4ab41479fdc3fc496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fire_Point: {fileID: 0}
+  arrow_Prefab: {fileID: 7604447005750659602, guid: 55f365ce3b45c754ab61173dab17c7b9,
+    type: 3}
+  player: {fileID: 0}
+  arrow_Force: 20
+  animator: {fileID: 0}
