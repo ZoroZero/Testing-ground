@@ -10,15 +10,11 @@ public class Grass : MonoBehaviour
 
     private float walk_counter = 0f;
 
-    private float walk_Rate = 20f;
+    private float walk_Rate = 2f;
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         player_Position = Vector2.zero;
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
     }
 
 
@@ -39,12 +35,9 @@ public class Grass : MonoBehaviour
     }
     IEnumerator enterBattle()
     {
-        player.GetComponent<Player>().move = Vector2.zero;
-        player.GetComponent<Player>().enabled = false;
+        player.GetComponent<Player>().stopMoving();
         Debug.Log("Encounter");
-        player_Position = player.transform.position;
-        yield return new WaitForSeconds(0.2f);    
-        //FindObjectOfType<SwitchCamera>().cameraPositonM();
-        
+        yield return new WaitForSeconds(0.2f);
+        World.instance.cameraPositonM();
     }
 }

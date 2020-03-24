@@ -6,17 +6,16 @@ public class SceneController : MonoBehaviour
 {
     public static string prevScene = "";
     public static string currentScene = "";
+    public GameObject[] worldMapObject;
+    public GameObject[] NPC_MapObject;
 
-    public virtual void Start()
-    {
-        // Meant to be extended/overwritten by a scene script
-        currentScene = SceneManager.GetActiveScene().name;
-    }
 
-    public void LoadScene(string sceneName)
+    public void initScene(int level)
     {
-        prevScene = currentScene;
-        SceneManager.LoadScene(sceneName);
+        Debug.Log("Level: " + level);
+        Debug.Log(worldMapObject.Length);
+        Instantiate(worldMapObject[level], new Vector3(0, 0, 0), Quaternion.identity);
+        // Instantiate(NPC_MapObject[level], new Vector3(0, 0, 0), Quaternion.identity);
     }
 
 }

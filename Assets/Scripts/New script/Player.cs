@@ -38,10 +38,17 @@ public class Player : MovingObject
         base.Start();
     }
 
+    protected void Awake()
+    {
+        animator = GetComponent<Animator>();
+        melee_Hitbox = GameObject.FindGameObjectWithTag("Player_AttackPoint").transform;
+        move = Vector3.zero;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (!moving)
+        if (!moving && !DialogueManager.instance.isTalking)
         {
             move.x = Input.GetAxisRaw("Horizontal");
             move.y = Input.GetAxisRaw("Vertical");
@@ -77,6 +84,7 @@ public class Player : MovingObject
             direction = Direction.down;
             animator.SetFloat("direction", (float)Direction.down);
         }
+
 
         if (Time.time > next_Attack_Time)
         {
@@ -162,9 +170,27 @@ public class Player : MovingObject
         }
     }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("NPC"))
+        {
+            if (Input.GetKeyDown(KeyCode.I)) {
+                collision.GetComponent<NPCDialogTrigger>().triggerDialog();
+                stopMoving();
+            }
+        }
+    }
+
     // Private void change to next scene
     private void LoadNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // Stop player from moving
+    public void stopMoving()
+    {
+        move = Vector3.zero;
+        animator.SetFloat("speed", move.sqrMagnitude);
     }
 }

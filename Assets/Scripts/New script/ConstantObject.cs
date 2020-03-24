@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ConstantObject : MonoBehaviour
 {
-    public ConstantObject instance = null;
+    public static ConstantObject instance = null;
     // Start is called before the first frame update
     void Awake()
     {

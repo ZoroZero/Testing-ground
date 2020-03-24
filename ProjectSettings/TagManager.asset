@@ -10,6 +10,8 @@ TagManager:
   - House
   - Camera2
   - Player_AttackPoint
+  - World
+  - NPC
   layers:
   - Default
   - TransparentFX

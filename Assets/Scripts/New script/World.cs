@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class World : SceneController
+public class World : MonoBehaviour
 {
     // PLayer position
     public Transform player;
@@ -14,16 +14,21 @@ public class World : SceneController
     AudioListener cameraOneAudioLis;
     AudioListener cameraTwoAudioLis;
 
-    public World instance = null;
+    public static World instance = null;
 
     public GameObject doorPrefab;
-    public GameObject battleCamera;
 
+    // Scene controller
+    public SceneController sceneController;
+
+    // World level
+    private int scene_level = 0;
     // Awake function
     private void Awake()
     {
         cameraOne = GameObject.FindGameObjectWithTag("MainCamera");
         cameraTwo = GameObject.FindGameObjectWithTag("Camera2");
+
         //Get Camera Listeners
         cameraOneAudioLis = cameraOne.GetComponent<AudioListener>();
         cameraTwoAudioLis = cameraTwo.GetComponent<AudioListener>();
@@ -39,24 +44,38 @@ public class World : SceneController
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
+        sceneController = GetComponent<SceneController>();
+
+        initLevel();
     }
 
     // Use this for initialization
-    public override void Start()
+    private void Start()
     {
-        base.Start();
     }
 
 
-    private void OnLevelWasLoaded(int level)
+    void initLevel()
     {
+        sceneController.initScene(scene_level);
+    }
+
+    private void OnLevelWasLoaded(int index)
+    {
+        scene_level++;
+
         cameraOne = GameObject.FindGameObjectWithTag("MainCamera");
+        cameraTwo = GameObject.FindGameObjectWithTag("Camera2");
+
         //Get Camera Listeners
         cameraOneAudioLis = cameraOne.GetComponent<AudioListener>();
+        cameraTwoAudioLis = cameraTwo.GetComponent<AudioListener>();
 
         PlayerPrefs.SetInt("CameraPosition", 0);
         //Camera Position Set
         cameraPositionChange(PlayerPrefs.GetInt("CameraPosition"));
+
+        initLevel();
     }
 
 

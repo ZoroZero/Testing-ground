@@ -13,6 +13,7 @@ public class Portal : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        grid = GameObject.FindGameObjectWithTag("World").GetComponent<Grid>();
         player = GameObject.FindGameObjectWithTag("Player");
         destination = grid.CellToWorld(grid.WorldToCell(portal.position)) - grid.cellSize/2;
     }
